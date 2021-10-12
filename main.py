@@ -9,6 +9,7 @@ ActualDutyCycle = 50
 delay = 0.2
 PotAddr = 0x52                                      # I2C address of potentiometer
 Channel = 1                                         # I2C channel 1
+step = 20                                           # For step size for varying the duty cycle
 
 # Initialize Stuffs
 pi = pigpio.pi()                                    # initialize GPIO
@@ -35,5 +36,11 @@ while(1):
     print("\n\n======================")
     print("Delay: " + str(delay) + " seconds")
     ref_voltage = read_ADC()
-    vary_Duty_Cycle(0, 100, 5, delay)
-    time.sleep(0.1)
+    pi.hardware_PWM(Pin18,Frequency,convert_Actual_Duty_Cycle(40))
+    time.sleep(10)
+    pi.hardware_PWM(Pin18,Frequency,convert_Actual_Duty_Cycle(60))
+    time.sleep(10)
+
+    vary_Duty_Cycle(0, 100, step, delay)
+    vary_Duty_Cycle(100-step, step, step, delay)
+    
